@@ -1,8 +1,10 @@
 import React, { Component } from "react";
+import "./Login.css";
 import { Auth } from "aws-amplify";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
-import "./Login.css";
+
+
 
 export default class Login extends Component {
   constructor(props) {
@@ -33,11 +35,13 @@ export default class Login extends Component {
     try {
       await Auth.signIn(this.state.email, this.state.password);
       this.props.userHasAuthenticated(true);
+      this.props.history.push("/");
     } catch (e) {
       alert(e.message);
       this.setState({ isLoading: false });
     }
   }
+
 
   render() {
     return (

@@ -17,6 +17,7 @@ export default class Notes extends Component {
       isDeleting: null,
       note: null,
       content: "",
+      creds: "",
       attachmentURL: null
     };
   }
@@ -25,7 +26,7 @@ export default class Notes extends Component {
     try {
       let attachmentURL;
       const note = await this.getNote();
-      const { content, attachment } = note;
+      const { content, creds, attachment } = note;
 
       if (attachment) {
         attachmentURL = await Storage.vault.get(attachment);
@@ -34,6 +35,7 @@ export default class Notes extends Component {
       this.setState({
         note,
         content,
+        creds,
         attachmentURL
       });
     } catch (e) {
@@ -57,6 +59,7 @@ export default class Notes extends Component {
 
   validateForm() {
     return this.state.content.length > 0;
+    return this.state.creds.length > 0;
   }
 
   formatFilename(str) {
@@ -92,6 +95,7 @@ export default class Notes extends Component {
 
       await this.saveNote({
         content: this.state.content,
+        creds: this.state.creds,
         attachment: attachment || this.state.note.attachment
       });
       this.props.history.push("/");
@@ -129,6 +133,15 @@ export default class Notes extends Component {
         {this.state.note &&
           <form onSubmit={this.handleSubmit}>
             <FormGroup controlId="content">
+             <ControlLabel>Where can we find an image of your container? Please enter your Docker registry address.</ControlLabel>
+              <FormControl
+                onChange={this.handleChange}
+                value={this.state.content}
+                componentClass="textarea"
+              />
+            </FormGroup>
+            <FormGroup controlId="creds">
+            <ControlLabel>Security credentials for access to your registry.</ControlLabel>
               <FormControl
                 onChange={this.handleChange}
                 value={this.state.content}
