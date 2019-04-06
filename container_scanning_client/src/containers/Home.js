@@ -43,7 +43,7 @@ export default class Home extends Component {
               to={`/notes/${note.noteId}`}
             >
               <ListGroupItem header={note.content.trim().split("\n")[0]}>
-                {"Created: " + new Date(note.createdAt).toLocaleString()}
+                {"Scanned Image at: " + new Date(note.createdAt).toLocaleString()}
               </ListGroupItem>
             </LinkContainer>
           : <LinkContainer
@@ -52,7 +52,7 @@ export default class Home extends Component {
             >
               <ListGroupItem>
                 <h4>
-                  <b>{"\uFF0B"}</b> Create a new note
+                  <b>{"\uFF0B"}</b> Scan a new container image
                 </h4>
               </ListGroupItem>
             </LinkContainer>
@@ -75,7 +75,6 @@ export default class Home extends Component {
       </div>
     );
   }
-
   renderNotes() {
     return (
       <div className="notes">
@@ -86,7 +85,6 @@ export default class Home extends Component {
       </div>
     );
   }
-
   render() {
     return (
       <div className="Home">

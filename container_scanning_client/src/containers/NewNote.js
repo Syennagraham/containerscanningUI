@@ -14,7 +14,9 @@ export default class NewNote extends Component {
 
     this.state = {
       isLoading: null,
-      content: ""
+      content: "",
+      creds: "",
+      isCardComplete: "",
     };
   }
 
@@ -26,9 +28,10 @@ export default class NewNote extends Component {
 
   validateForm() {
     return this.state.content.length > 0;
+    return this.state.creds.length > 0;
   }
 
-  handleChange = event => {
+  handleFieldChange = event => {
     this.setState({
       [event.target.id]: event.target.value
     });
@@ -37,6 +40,7 @@ export default class NewNote extends Component {
   handleFileChange = event => {
     this.file = event.target.files[0];
   }
+
 
   handleSubmit = async event => {
     event.preventDefault();
@@ -47,6 +51,8 @@ export default class NewNote extends Component {
     }
 
     this.setState({ isLoading: true });
+    
+    const { name } = this.state;
 
     try {
       const attachment = this.file
@@ -55,7 +61,8 @@ export default class NewNote extends Component {
 
       await this.createNote({
         attachment,
-        content: this.state.content
+        content: this.state.content,
+        creds: this.state.creds
       });
       this.props.history.push("/");
     } catch (e) {
@@ -69,15 +76,22 @@ export default class NewNote extends Component {
       <div className="NewNote">
         <form onSubmit={this.handleSubmit}>
           <FormGroup controlId="content">
+            <ControlLabel>Where can we find an image of your container? Please enter your Docker registry address.</ControlLabel>
             <FormControl
-              onChange={this.handleChange}
+              onChange={this.handleFieldChange}
               value={this.state.content}
               componentClass="textarea"
+              placeholder="URL of container registry"
             />
           </FormGroup>
-          <FormGroup controlId="file">
-            <ControlLabel>Attachment</ControlLabel>
-            <FormControl onChange={this.handleFileChange} type="file" />
+          <FormGroup controlId="creds">
+            <ControlLabel>Security credentials for access to your registry.</ControlLabel>
+            <FormControl 
+              onChange={this.handleFieldChange} 
+              componentClass="textarea"
+              value={this.state.creds}
+              placeholder="Credentials"
+            />
           </FormGroup>
           <LoaderButton
             block

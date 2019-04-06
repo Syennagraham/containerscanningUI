@@ -1,11 +1,10 @@
+import React, { Component, Fragment } from "react";
 import "./App.css";
 import Routes from "./Routes";
-import { Link, withRouter } from "react-router-dom";
 import { Nav, Navbar, NavItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
-import React, { Component, Fragment } from "react";
 import { Auth } from "aws-amplify";
-
+import { Link, withRouter } from "react-router-dom";
 
 
 class App extends Component {
@@ -14,10 +13,10 @@ class App extends Component {
 
     this.state = {
       isAuthenticated: false,
-      isAuthenticating: true
+      isAuthenicating: true
     };
   }
-
+  
   async componentDidMount() {
     try {
       await Auth.currentSession();
@@ -33,10 +32,11 @@ class App extends Component {
   }
 
 
+
   userHasAuthenticated = authenticated => {
     this.setState({ isAuthenticated: authenticated });
-  }
-
+  }  
+  
   handleLogout = async event => {
     await Auth.signOut();
 
@@ -64,20 +64,15 @@ class App extends Component {
           <Navbar.Collapse>
             <Nav pullRight>
               {this.state.isAuthenticated
-                ? <Fragment>
-                    <LinkContainer to="/settings">
-                      <NavItem>Settings</NavItem>
-                    </LinkContainer>
-                    <NavItem onClick={this.handleLogout}>Logout</NavItem>
-                  </Fragment>
-                : <Fragment>
-                    <LinkContainer to="/Signup">
-                      <NavItem>Signup</NavItem>
-                    </LinkContainer>
-                    <LinkContainer to="/Login">
-                      <NavItem>Login</NavItem>
-                    </LinkContainer>
-                  </Fragment>
+               ? <NavItem onClick={this.handleLogout}>Logout</NavItem>
+               : <Fragment>
+                   <LinkContainer to="/signup">
+                     <NavItem>Signup</NavItem>
+                   </LinkContainer>
+                   <LinkContainer to="/login">
+                     <NavItem>Login</NavItem>
+                   </LinkContainer>
+                 </Fragment>
               }
             </Nav>
           </Navbar.Collapse>
@@ -89,4 +84,3 @@ class App extends Component {
 }
 
 export default withRouter(App);
-
