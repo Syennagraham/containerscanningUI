@@ -24,6 +24,7 @@ export default ({ childProps }) => (
     <AuthenticatedRoute path="/settings" exact component={Settings} props={childProps} />
     <AuthenticatedRoute path="/settings/password" exact component={ChangePassword} props={childProps} />
     <AppliedRoute path="/login" exact component={Login} props={childProps} />
+    <AppliedRoute path="/notes/new" exact component={NewNote} props={childProps} />
     <UnauthenticatedRoute
       path="/signup"
       exact
@@ -34,12 +35,6 @@ export default ({ childProps }) => (
       path="/settings/email"
       exact
       component={ChangeEmail}
-      props={childProps}
-    />
-    <AuthenticatedRoute
-      path="/notes/new"
-      exact
-      component={NewNote}
       props={childProps}
     />
     <AuthenticatedRoute

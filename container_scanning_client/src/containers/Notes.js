@@ -59,7 +59,6 @@ export default class Notes extends Component {
 
   validateForm() {
     return this.state.content.length > 0;
-    return this.state.creds.length > 0;
   }
 
   formatFilename(str) {

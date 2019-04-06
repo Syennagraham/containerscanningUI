@@ -16,7 +16,6 @@ export default class NewNote extends Component {
       isLoading: null,
       content: "",
       creds: "",
-      isCardComplete: "",
     };
   }
 
@@ -28,7 +27,6 @@ export default class NewNote extends Component {
 
   validateForm() {
     return this.state.content.length > 0;
-    return this.state.creds.length > 0;
   }
 
   handleFieldChange = event => {
@@ -52,8 +50,6 @@ export default class NewNote extends Component {
 
     this.setState({ isLoading: true });
     
-    const { name } = this.state;
-
     try {
       const attachment = this.file
         ? await s3Upload(this.file)

@@ -1,11 +1,10 @@
 import React, { Component, Fragment } from "react";
-import "./App.css";
-import Routes from "./Routes";
-import { Nav, Navbar, NavItem } from "react-bootstrap";
-import { LinkContainer } from "react-router-bootstrap";
 import { Auth } from "aws-amplify";
 import { Link, withRouter } from "react-router-dom";
-
+import { Nav, Navbar, NavItem } from "react-bootstrap";
+import { LinkContainer } from "react-router-bootstrap";
+import Routes from "./Routes";
+import "./App.css";
 
 class App extends Component {
   constructor(props) {
@@ -13,14 +12,15 @@ class App extends Component {
 
     this.state = {
       isAuthenticated: false,
-      isAuthenicating: true
+      isAuthenticating: true
     };
   }
-  
+
   async componentDidMount() {
     try {
-      await Auth.currentSession();
-      this.userHasAuthenticated(true);
+      if (await Auth.currentSession()) {
+        this.userHasAuthenticated(true);
+      }
     }
     catch(e) {
       if (e !== 'No current user') {
@@ -31,12 +31,10 @@ class App extends Component {
     this.setState({ isAuthenticating: false });
   }
 
-
-
   userHasAuthenticated = authenticated => {
     this.setState({ isAuthenticated: authenticated });
-  }  
-  
+  }
+
   handleLogout = async event => {
     await Auth.signOut();
 
@@ -64,15 +62,20 @@ class App extends Component {
           <Navbar.Collapse>
             <Nav pullRight>
               {this.state.isAuthenticated
-               ? <NavItem onClick={this.handleLogout}>Logout</NavItem>
-               : <Fragment>
-                   <LinkContainer to="/signup">
-                     <NavItem>Signup</NavItem>
-                   </LinkContainer>
-                   <LinkContainer to="/login">
-                     <NavItem>Login</NavItem>
-                   </LinkContainer>
-                 </Fragment>
+                ? <Fragment>
+                    <LinkContainer to="/settings">
+                      <NavItem>Settings</NavItem>
+                    </LinkContainer>
+                    <NavItem onClick={this.handleLogout}>Logout</NavItem>
+                  </Fragment>
+                : <Fragment>
+                    <LinkContainer to="/signup">
+                      <NavItem>Signup</NavItem>
+                    </LinkContainer>
+                    <LinkContainer to="/login">
+                      <NavItem>Login</NavItem>
+                    </LinkContainer>
+                  </Fragment>
               }
             </Nav>
           </Navbar.Collapse>
